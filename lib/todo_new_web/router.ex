@@ -89,4 +89,11 @@ defmodule TodoNewWeb.Router do
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
   end
+
+  ##Tasks routes
+  scope "/", TodoNewWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    resources "/tasks", TaskController
+  end
 end
