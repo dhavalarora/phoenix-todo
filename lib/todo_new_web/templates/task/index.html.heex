@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody>
-<%= for task <- @tasks do %>
+<%= for task <- filter(@tasks, @filter) do %>
     <tr>
       <td><%= task.title %></td>
       <td><%= task.status %></td>
@@ -44,6 +44,26 @@
 <% end %>
   </tbody>
 </table>
-
+<footer class="footer" style="display: block;">
+  <span class="todo-count"><strong>Total tasks[<%= Enum.count(filter(@tasks, "all")) %>]</strong></span>
+  <ul class="filters">
+    <li>
+      <a href="/tasks" class= {selected(@filter, "all")} >All</a>
+    </li>
+    <li>
+      <a href="/working" class= {selected(@filter, "working")} >Working [<%= Enum.count(filter(@tasks, "working")) %>]</a>
+    </li>
+    <li>
+      <a href="/completed" class= {selected(@filter, "completed")} >Completed [<%= Enum.count(filter(@tasks, "completed")) %>]</a>
+    </li>
+    <li>
+      <a href="/clear" class= "clear-completed" >Delete Completed </a>
+    </li>
+  </ul>
+</footer>
+<br>
+<br>
 <span><%= link "New Task", to: Routes.task_path(@conn, :new) %></span> |
-<span><%= link "Back", to: "/" %></span>
+<span><%= link "Tasks Dashboard", to: "/tasks" %></span> |
+<span><%= link "Home", to: "/" %> </span>
+<br><br><br>

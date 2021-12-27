@@ -5,7 +5,7 @@
   <% else %>
   <h1><%= gettext "Welcome to %{name}!", name: "Phoenix To-Do" %></h1>
   <p>New way to manage your to-do lists</p>
-  <p>Register/Login to get started</p>
+  <p><%= link "Register", to: Routes.user_registration_path(@conn, :new) %>/<%= link "Log in", to: Routes.user_session_path(@conn, :new) %> to get started</p>
   <% end %>
 </section>
 

@@ -106,7 +106,7 @@ defmodule TodoNew.Todo do
   Returns the list of user's tasks
   """
   def list_user_tasks(user) do
-    Repo.all(from t in Task, where: t.user_id == ^user.id)
+    Repo.all(from t in Task, where: t.user_id == ^user.id and t.status != :Deleted)
   end
 
   @doc """
@@ -144,4 +144,9 @@ defmodule TodoNew.Todo do
 
   """
   def get_task_and_user!(id), do: Task |> Repo.get!(id) |> Repo.preload(:user)
+
+  def clear_completed(user_id) do
+    query = from(i in Task, where: i.user_id == ^user_id, where: i.status == :Completed)
+    Repo.update_all(query, set: [status: :Deleted])
+  end
 end

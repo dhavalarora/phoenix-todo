@@ -4,10 +4,10 @@ defmodule TodoNewWeb.TaskController do
   alias TodoNew.Todo
   alias TodoNew.Todo.Task
 
-  def index(conn, _params) do
+  def index(conn, params) do
     user = conn.assigns[:current_user]
     tasks = Todo.list_user_tasks(user)
-    render(conn, "index.html", tasks: tasks)
+    render(conn, "index.html", tasks: tasks, filter: Map.get(params, "filter", "all"))
   end
 
   def new(conn, _params) do
@@ -97,15 +97,12 @@ defmodule TodoNewWeb.TaskController do
   def update_status(conn, %{"id" => id}) do
     user = conn.assigns[:current_user]
     task = Todo.get_task_and_user!(id)
-
     task_params =
       case task.status do
         :New ->
           %{status: "Working", start_time: Timex.now("Asia/Kolkata")}
-
         :Working ->
           %{status: "Completed", end_time: Timex.now("Asia/Kolkata")}
-
         _ ->
           %{}
       end
@@ -122,4 +119,11 @@ defmodule TodoNewWeb.TaskController do
       |> redirect(to: Routes.task_path(conn, :index))
     end
   end
+
+  def clear_completed(conn, _params) do
+    user = conn.assigns[:current_user]
+    Todo.clear_completed(user.id)
+    index(conn, %{filter: "all"})
+  end
+
 end

@@ -21,6 +21,12 @@ defmodule TodoNewWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    delete "/users/log_out", UserSessionController, :delete
+    get "/users/confirm", UserConfirmationController, :new
+    post "/users/confirm", UserConfirmationController, :create
+    get "/users/confirm/:token", UserConfirmationController, :edit
+    post "/users/confirm/:token", UserConfirmationController, :update
   end
 
   # Other scopes may use custom stacks.
@@ -42,6 +48,7 @@ defmodule TodoNewWeb.Router do
       pipe_through :browser
 
       live_dashboard "/dashboard", metrics: TodoNewWeb.Telemetry
+
     end
   end
 
@@ -57,7 +64,6 @@ defmodule TodoNewWeb.Router do
     end
   end
 
-  ## Authentication routes
 
   scope "/", TodoNewWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
@@ -78,24 +84,13 @@ defmodule TodoNewWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-  end
-
-  scope "/", TodoNewWeb do
-    pipe_through [:browser]
-
-    delete "/users/log_out", UserSessionController, :delete
-    get "/users/confirm", UserConfirmationController, :new
-    post "/users/confirm", UserConfirmationController, :create
-    get "/users/confirm/:token", UserConfirmationController, :edit
-    post "/users/confirm/:token", UserConfirmationController, :update
-  end
-
-  ## Tasks routes
-
-  scope "/", TodoNewWeb do
-    pipe_through [:browser, :require_authenticated_user]
 
     resources "/tasks", TaskController
     patch "/tasks/:id/status", TaskController, :update_status
+
+    get "/clear", TaskController, :clear_completed
+    get "/:filter", TaskController, :index
+
   end
+
 end
