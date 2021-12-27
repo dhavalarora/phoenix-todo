@@ -16,6 +16,11 @@ Once task is created, user can specify when he/she started working on that task 
 App will show list of tasks with their start/end time as well as time worked on each of them.
 User can also filter tasks according to it's status.
 
+UI view:
+
+<img width="727" alt="image" src="https://user-images.githubusercontent.com/50210698/147490886-2402612c-0529-413d-99e3-880bd562df35.png">
+
+
 ### Setup and Installation:
 
   * Install dependencies with `mix deps.get`
@@ -26,10 +31,3 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-### Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
