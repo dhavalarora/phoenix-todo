@@ -24,5 +24,4 @@ defmodule TodoNewWeb.TaskView do
       false -> ""
     end
   end
-
 end

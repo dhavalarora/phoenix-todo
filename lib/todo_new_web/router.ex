@@ -48,7 +48,6 @@ defmodule TodoNewWeb.Router do
       pipe_through :browser
 
       live_dashboard "/dashboard", metrics: TodoNewWeb.Telemetry
-
     end
   end
 
@@ -63,7 +62,6 @@ defmodule TodoNewWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
-
 
   scope "/", TodoNewWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
@@ -90,7 +88,5 @@ defmodule TodoNewWeb.Router do
 
     get "/clear", TaskController, :clear_completed
     get "/:filter", TaskController, :index
-
   end
-
 end

@@ -44,6 +44,8 @@
 <% end %>
   </tbody>
 </table>
+
+<%= if Enum.count(filter(@tasks, "all")) > 0 do  %>
 <footer class="footer" style="display: block;">
   <span class="todo-count"><strong>Total tasks[<%= Enum.count(filter(@tasks, "all")) %>]</strong></span>
   <ul class="filters">
@@ -64,9 +66,10 @@
     </li>
   </ul>
 </footer>
+<% end %>
 <br>
 <br>
-<span><%= link "New Task", to: Routes.task_path(@conn, :new) %></span> |
-<span><%= link "Tasks Dashboard", to: "/tasks" %></span> |
+<span><%= link "Add New Task", to: Routes.task_path(@conn, :new) %></span><br><br>
+<span><%= link "Task Dashboard", to: "/tasks" %></span> |
 <span><%= link "Home", to: "/" %> </span>
 <br><br><br>
