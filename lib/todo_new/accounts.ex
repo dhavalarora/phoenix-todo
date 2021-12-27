@@ -6,7 +6,7 @@ defmodule TodoNew.Accounts do
   import Ecto.Query, warn: false
   alias TodoNew.Repo
 
-  alias TodoNew.Accounts.{User, UserToken, UserNotifier}
+  alias TodoNew.Accounts.{User, UserNotifier, UserToken}
 
   ## Database getters
 

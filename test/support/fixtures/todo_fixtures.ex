@@ -12,9 +12,8 @@ defmodule TodoNew.TodoFixtures do
       attrs
       |> Enum.into(%{
         end_time: ~N[2021-12-22 07:01:00],
-        person_id: 42,
         start_time: ~N[2021-12-22 07:01:00],
-        status: 42,
+        status: 0,
         title: "some title"
       })
       |> TodoNew.Todo.create_task()

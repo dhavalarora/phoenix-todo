@@ -1,13 +1,13 @@
-<h1>Listing Tasks</h1>
+<h1>Your Tasks</h1>
 
 <table>
   <thead>
     <tr>
       <th>Title</th>
-      <th>Person</th>
       <th>Status</th>
       <th>Start time</th>
       <th>End time</th>
+      <th>Time taken</th>
 
       <th></th>
     </tr>
@@ -16,13 +16,27 @@
 <%= for task <- @tasks do %>
     <tr>
       <td><%= task.title %></td>
-      <td><%= task.person_id %></td>
       <td><%= task.status %></td>
-      <td><%= task.start_time %></td>
-      <td><%= task.end_time %></td>
+      <%= if task.start_time do %>
+        <td><%= Timex.format!(task.start_time,"%d-%m-%Y %H:%M:%S", :strftime)  %> </td>
+      <% else %>
+        <td>
+        <%= link "Start working!", to: Routes.task_path(@conn, :update_status, task.id), method: :patch %>
+         <%# <a href={ Routes.update_status_path(@conn, :update_status, task.id, %{status: "Completed"}) } > Start working!</a> %>
+         </td> 
+      <% end %>
+
+      <%= case task.status do %>
+        <% :Completed-> %>
+          <td><%= Timex.format!(task.end_time,"%d-%m-%Y %H:%M:%S", :strftime) %> </td>
+        <% :Working -> %>
+        <td> <%= link "Mark Done!", to: Routes.task_path(@conn, :update_status, task.id), method: :patch %> </td>
+        <% _ -> %>
+        <td> </td>
+      <% end %>
+      <td><%= task.end_time && time_spent(task.start_time, task.end_time) %> </td>
 
       <td>
-        <span><%= link "Show", to: Routes.task_path(@conn, :show, task) %></span>
         <span><%= link "Edit", to: Routes.task_path(@conn, :edit, task) %></span>
         <span><%= link "Delete", to: Routes.task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
@@ -31,4 +45,5 @@
   </tbody>
 </table>
 
-<span><%= link "New Task", to: Routes.task_path(@conn, :new) %></span>
+<span><%= link "New Task", to: Routes.task_path(@conn, :new) %></span> |
+<span><%= link "Back", to: "/" %></span>

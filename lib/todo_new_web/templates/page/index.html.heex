@@ -1,9 +1,15 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
+  <%= if @current_user do %>
+  <p>Welcome <%= @current_user.email %> </p>
+  <p><%= link "Click here", to: Routes.task_path(@conn, :index) %> to manage your tasks in a new way</p>
+  <% else %>
+  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix To-Do" %></h1>
+  <p>New way to manage your to-do lists</p>
+  <p>Register/Login to get started</p>
+  <% end %>
 </section>
 
-<section class="row">
+<%# <section class="row">
   <article class="column">
     <h2>Resources</h2>
     <ul>
@@ -38,4 +44,4 @@
       </li>
     </ul>
   </article>
-</section>
+</section> %>

@@ -10,7 +10,14 @@ defmodule TodoNew.MixProject do
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -49,7 +56,16 @@ defmodule TodoNew.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+
+      # Datetime
+      {:timex, "~> 3.7"},
+
+      # Test Coverage
+      {:excoveralls, "~> 0.14.4", only: [:test, :dev]},
+
+      # Code quality
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 

@@ -35,7 +35,7 @@ defmodule TodoNew.Todo do
       ** (Ecto.NoResultsError)
 
   """
-  def get_task!(id), do: Repo.get!(Task, id)
+  def get_task!(id), do: Task |> Repo.get!(id)
 
   @doc """
   Creates a task.
@@ -101,4 +101,47 @@ defmodule TodoNew.Todo do
   def change_task(%Task{} = task, attrs \\ %{}) do
     Task.changeset(task, attrs)
   end
+
+  @doc """
+  Returns the list of user's tasks
+  """
+  def list_user_tasks(user) do
+    Repo.all(from t in Task, where: t.user_id == ^user.id)
+  end
+
+  @doc """
+  Creates a task belonging to the user.
+
+  ## Examples
+
+      iex> create_user_task(%{field: value}, user)
+      {:ok, %Task{}}
+
+      iex> create_user_task(%{field: bad_value}, user)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_user_task(attrs, user) do
+    attrs = Map.put(attrs, "user_id", user.id)
+
+    %Task{}
+    |> Task.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Gets a single task with user preloaded.
+
+  Raises `Ecto.NoResultsError` if the Task does not exist.
+
+  ## Examples
+
+      iex> get_task!(123)
+      %Task{}
+
+      iex> get_task!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_task_and_user!(id), do: Task |> Repo.get!(id) |> Repo.preload(:user)
 end
