@@ -1,5 +1,6 @@
 [![Elixir CI](https://github.com/dhavalarora/phoenix-todo/actions/workflows/elixir.yml/badge.svg)](
 https://github.com/dhavalarora/phoenix-todo/actions/workflows/elixir.yml)
+[![codecov](https://codecov.io/gh/dhavalarora/phoenix-todo/branch/master/graph/badge.svg?token=EJEJX95VF0)](https://codecov.io/gh/dhavalarora/phoenix-todo)
 
 # Phoenix todo-app
 
