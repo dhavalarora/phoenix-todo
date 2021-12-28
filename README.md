@@ -1,3 +1,6 @@
+[![Elixir CI](https://github.com/dhavalarora/phoenix-todo/actions/workflows/elixir.yml/badge.svg)](
+https://github.com/dhavalarora/phoenix-todo/actions/workflows/elixir.yml)
+
 # Phoenix todo-app
 
 This project is a to-do list management app. It is built using phoenix framework for Elixir with postgress as DB.
