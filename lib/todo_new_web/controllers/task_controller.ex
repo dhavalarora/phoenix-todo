@@ -106,12 +106,14 @@ defmodule TodoNewWeb.TaskController do
           else
             %{}
           end
+
         :Working ->
           if new_status == "Completed" do
             %{status: "Completed", end_time: Timex.now("Asia/Kolkata")}
           else
             %{}
           end
+
         _ ->
           %{}
       end

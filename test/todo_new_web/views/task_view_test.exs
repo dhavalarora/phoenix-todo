@@ -12,7 +12,15 @@ defmodule TodoNewWeb.TaskViewTest do
     completed_task = %{status: :Completed}
     working_task = %{status: :Working}
     new_task = %{status: :New}
-    task_list = [completed_task, completed_task, new_task, working_task, working_task, working_task]
+
+    task_list = [
+      completed_task,
+      completed_task,
+      new_task,
+      working_task,
+      working_task,
+      working_task
+    ]
 
     assert Enum.count(TaskView.filter(task_list, "new")) == 1
     assert Enum.count(TaskView.filter(task_list, "working")) == 3
