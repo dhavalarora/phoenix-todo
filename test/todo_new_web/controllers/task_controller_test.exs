@@ -65,6 +65,20 @@ defmodule TodoNewWeb.TaskControllerTest do
     end
   end
 
+  describe "show task" do
+    setup [:create_task]
+
+    test "redirects when requested by another user", %{conn: conn, task: task} do
+      new_user = user_fixture()
+
+      token = Accounts.generate_user_session_token(new_user)
+      conn = put_session(conn, :user_token, token)
+
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert redirected_to(conn) == Routes.task_path(conn, :index)
+    end
+  end
+
   describe "edit task" do
     setup [:create_task]
 
@@ -151,31 +165,72 @@ defmodule TodoNewWeb.TaskControllerTest do
       conn = put_session(conn, :user_token, token)
       assert task.status == :New
 
-      conn = patch(conn, Routes.task_path(conn, :update_status, task.id))
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "Working")
       conn = get(conn, Routes.task_path(conn, :show, task))
       assert html_response(conn, 200) =~ "Working"
 
-      conn = patch(conn, Routes.task_path(conn, :update_status, task.id))
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "Completed")
       conn = get(conn, Routes.task_path(conn, :show, task))
       assert html_response(conn, 200) =~ "Completed"
     end
 
-    test "renders errors when data is invalid", %{conn: conn, task: task, user: user} do
+    test "no update when new status is not acc. to flow New -> Working -> Completed", %{conn: conn, task: task, user: user} do
       token = Accounts.generate_user_session_token(user)
       conn = put_session(conn, :user_token, token)
-      conn = put(conn, Routes.task_path(conn, :update, task), task: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Task"
+      assert task.status == :New
+
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "Completed")
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "New"
+
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "Working")
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "Working"
+
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "New")
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "Working"
+
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "Completed")
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "Completed"
+
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "New")
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "Completed"
     end
 
-    # test "redirects when updating with different user", %{conn: conn, task: task} do
-    #   new_user = user_fixture()
+    test "redirects when updating with different user", %{conn: conn, task: task} do
+      new_user = user_fixture()
 
-    #   token = Accounts.generate_user_session_token(new_user)
-    #   conn = put_session(conn, :user_token, token)
+      token = Accounts.generate_user_session_token(new_user)
+      conn = put_session(conn, :user_token, token)
 
-    #   conn = put(conn, Routes.task_path(conn, :update, task), task: @update_attrs)
-    #   assert redirected_to(conn) == Routes.task_path(conn, :index)
-    # end
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "Working")
+      assert redirected_to(conn) == Routes.task_path(conn, :index)
+    end
+  end
+
+  describe "clear completed tasks" do
+    setup [:create_task]
+
+    test "Mark completed tasks as deleted", %{conn: conn, task: task, user: user} do
+      token = Accounts.generate_user_session_token(user)
+      conn = put_session(conn, :user_token, token)
+      assert task.status == :New
+
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id, new_status: "Working"))
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "Working"
+
+      conn = patch(conn, Routes.task_path(conn, :update_status, task.id), new_status: "Completed")
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "Completed"
+
+      conn = get(conn, Routes.task_path(conn, :clear_completed))
+      conn = get(conn, Routes.task_path(conn, :show, task))
+      assert html_response(conn, 200) =~ "Deleted"
+    end
   end
 
   defp create_task(_) do
