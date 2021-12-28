@@ -94,18 +94,24 @@ defmodule TodoNewWeb.TaskController do
     end
   end
 
-  def update_status(conn, %{"id" => id}) do
+  def update_status(conn, %{"id" => id, "new_status" => new_status}) do
     user = conn.assigns[:current_user]
     task = Todo.get_task_and_user!(id)
 
     task_params =
       case task.status do
         :New ->
-          %{status: "Working", start_time: Timex.now("Asia/Kolkata")}
-
+          if new_status == "Working" do
+            %{status: "Working", start_time: Timex.now("Asia/Kolkata")}
+          else
+            %{}
+          end
         :Working ->
-          %{status: "Completed", end_time: Timex.now("Asia/Kolkata")}
-
+          if new_status == "Completed" do
+            %{status: "Completed", end_time: Timex.now("Asia/Kolkata")}
+          else
+            %{}
+          end
         _ ->
           %{}
       end

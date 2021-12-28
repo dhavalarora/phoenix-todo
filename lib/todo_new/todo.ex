@@ -103,10 +103,10 @@ defmodule TodoNew.Todo do
   end
 
   @doc """
-  Returns the list of user's tasks
+  Returns the list of user's non-deleted tasks ordered by status
   """
   def list_user_tasks(user) do
-    Repo.all(from t in Task, where: t.user_id == ^user.id and t.status != :Deleted)
+    Repo.all(from t in Task, where: t.user_id == ^user.id and t.status != :Deleted, order_by: t.status)
   end
 
   @doc """

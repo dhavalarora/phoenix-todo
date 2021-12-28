@@ -21,7 +21,7 @@
         <td><%= Timex.format!(task.start_time,"%d-%m-%Y %H:%M:%S", :strftime)  %> </td>
       <% else %>
         <td>
-        <%= link "Start working!", to: Routes.task_path(@conn, :update_status, task.id), method: :patch %>
+        <%= link "Start working!", to: Routes.task_path(@conn, :update_status, task.id, new_status: :Working), method: :patch %>
          <%# <a href={ Routes.update_status_path(@conn, :update_status, task.id, %{status: "Completed"}) } > Start working!</a> %>
          </td> 
       <% end %>
@@ -30,7 +30,7 @@
         <% :Completed-> %>
           <td><%= Timex.format!(task.end_time,"%d-%m-%Y %H:%M:%S", :strftime) %> </td>
         <% :Working -> %>
-        <td> <%= link "Mark Done!", to: Routes.task_path(@conn, :update_status, task.id), method: :patch %> </td>
+        <td> <%= link "Mark Done!", to: Routes.task_path(@conn, :update_status, task.id, new_status: :Completed), method: :patch %> </td>
         <% _ -> %>
         <td> </td>
       <% end %>
