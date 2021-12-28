@@ -53,7 +53,7 @@
       <a href="/tasks" class= {selected(@filter, "all")} >All</a>
     </li>
     <li>
-      <a href="/working" class= {selected(@filter, "new")} >New [<%= Enum.count(filter(@tasks, "new")) %>]</a>
+      <a href="/new" class= {selected(@filter, "new")} >New [<%= Enum.count(filter(@tasks, "new")) %>]</a>
     </li>
     <li>
       <a href="/working" class= {selected(@filter, "working")} >Working [<%= Enum.count(filter(@tasks, "working")) %>]</a>
