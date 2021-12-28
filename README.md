@@ -22,7 +22,8 @@ User can also filter tasks according to it's status.
 
 UI view:
 
-<img width="727" alt="image" src="https://user-images.githubusercontent.com/50210698/147490886-2402612c-0529-413d-99e3-880bd562df35.png">
+<img width="683" alt="image" src="https://user-images.githubusercontent.com/50210698/147541055-a0fd6184-17bb-4c75-aaf4-f4a7f08ef1e7.png">
+
 
 
 ### Setup and Installation:
