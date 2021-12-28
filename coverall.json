@@ -3,6 +3,10 @@
       "minimum_coverage": 100
     },
     "skip_files": [
-      "test/"
+      "test/",
+      "lib/todo_new_web.ex",
+      "lib/todo_new/application.ex",
+      "lib/todo_new_web/router.ex",
+      "lib/todo_new_web/telemetry.ex"
     ]
   }
