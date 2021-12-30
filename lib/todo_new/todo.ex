@@ -7,6 +7,7 @@ defmodule TodoNew.Todo do
   alias TodoNew.Repo
 
   alias TodoNew.Todo.Task
+  alias TodoNew.Todo.SubTask
 
   @doc """
   Returns the list of tasks.
@@ -131,24 +132,73 @@ defmodule TodoNew.Todo do
     |> Repo.insert()
   end
 
-  @doc """
-  Gets a single task with user preloaded.
-
-  Raises `Ecto.NoResultsError` if the Task does not exist.
-
-  ## Examples
-
-      iex> get_task!(123)
-      %Task{}
-
-      iex> get_task!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_task_and_user!(id), do: Task |> Repo.get!(id) |> Repo.preload(:user)
-
   def clear_completed(user_id) do
     query = from(i in Task, where: i.user_id == ^user_id, where: i.status == :Completed)
     Repo.update_all(query, set: [status: :Deleted])
+  end
+
+  ############################# Subtask functions #############################
+
+  def list_subtasks(task_id) do
+    Repo.all(
+      from s in SubTask,
+        where: s.task_id == ^task_id and s.status != :Deleted,
+        order_by: s.inserted_at
+    )
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking subtask changes.
+
+  ## Examples
+
+      iex> change_subtask(subtask)
+      %Ecto.Changeset{data: %SubTask{}}
+
+  """
+  def change_subtask(%SubTask{} = sub_task, attrs \\ %{}) do
+    SubTask.changeset(sub_task, attrs)
+  end
+
+  def create_subtask(attrs) do
+    %SubTask{}
+    |> SubTask.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def get_subtask!(id), do: SubTask |> Repo.get!(id)
+
+  @doc """
+  Updates a subtask.
+
+  ## Examples
+
+      iex> update_subtask(subtask, %{field: new_value})
+      {:ok, %SubTask{}}
+
+      iex> update_subtask(subtask, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_subtask(%SubTask{} = subtask, attrs) do
+    subtask
+    |> SubTask.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a subtask.
+
+  ## Examples
+
+      iex> delete_subtask(subtask)
+      {:ok, %SubTask{}}
+
+      iex> delete_subtask(subtask)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_subtask(%SubTask{} = subtask) do
+    Repo.delete(subtask)
   end
 end

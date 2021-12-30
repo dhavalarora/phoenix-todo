@@ -1,12 +1,9 @@
-defmodule TodoNew.Todo.Task do
+defmodule TodoNew.Todo.SubTask do
   use Ecto.Schema
-
   import Ecto.Changeset
+  alias TodoNew.Todo.Task
 
-  alias TodoNew.Accounts.User
-  alias TodoNew.Todo.SubTask
-
-  schema "tasks" do
+  schema "sub_tasks" do
     field :end_time, :naive_datetime, default: nil
     field :start_time, :naive_datetime, default: nil
 
@@ -17,16 +14,15 @@ defmodule TodoNew.Todo.Task do
     field :title
     field :time_taken, :naive_datetime, virtual: true
 
-    belongs_to :user, User
-    has_many :sub_tasks, SubTask
+    belongs_to :task, Task
 
     timestamps()
   end
 
   @doc false
-  def changeset(task, attrs) do
-    task
-    |> cast(attrs, [:title, :user_id, :status, :start_time, :end_time])
-    |> validate_required([:title, :user_id])
+  def changeset(sub_task, attrs) do
+    sub_task
+    |> cast(attrs, [:title, :task_id, :status, :start_time, :end_time])
+    |> validate_required([:title, :task_id])
   end
 end

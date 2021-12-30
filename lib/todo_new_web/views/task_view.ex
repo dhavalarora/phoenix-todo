@@ -15,6 +15,7 @@ defmodule TodoNewWeb.TaskView do
       "new" -> Enum.filter(tasks, fn t -> t.status == :New end)
       "working" -> Enum.filter(tasks, fn t -> t.status == :Working end)
       "completed" -> Enum.filter(tasks, fn t -> t.status == :Completed end)
+      _ -> tasks
     end
   end
 

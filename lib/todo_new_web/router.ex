@@ -85,8 +85,19 @@ defmodule TodoNewWeb.Router do
 
     resources "/tasks", TaskController
     patch "/tasks/:id/status", TaskController, :update_status
-
     get "/clear", TaskController, :clear_completed
     get "/:filter", TaskController, :index
+  end
+
+  scope "/tasks/:id", TodoNewWeb, as: :sub do
+    pipe_through [:browser, :require_authenticated_user]
+    get "/subtasks", TaskController, :subtasks
+    get "/subtasks/new", TaskController, :new_subtask
+    post "/subtasks", TaskController, :create_subtask
+    get "/subtasks/:subtask_id/edit", TaskController, :edit_subtask
+    put "/subtasks/:subtask_id", TaskController, :update_subtask
+    get "/subtasks/:subtask_id", TaskController, :show_subtask
+    delete "/subtasks/:subtask_id", TaskController, :delete_subtask
+    patch "/subtasks/:subtask_id", TaskController, :update_subtask_status
   end
 end

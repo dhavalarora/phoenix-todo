@@ -1,0 +1,50 @@
+<h1>Task</h1> 
+<h2>Sub Tasks</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Start time</th>
+      <th>End time</th>
+      <th>Time taken</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for subtask <- @sub_tasks do %>
+    <tr>
+      <td><%= subtask.title %></td>
+      <td><%= subtask.status %></td>
+      <%= if subtask.start_time do %>
+        <td><%= Timex.format!(subtask.start_time,"%d-%m-%Y %H:%M:%S", :strftime)  %> </td>
+      <% else %>
+        <td>
+        <%= link "Start working!", to: Routes.sub_task_path(@conn, :update_subtask_status, subtask.task_id, subtask.id, new_status: :Working), method: :patch %>
+         <%# <a href={ Routes.update_status_path(@conn, :update_status, task.id, %{status: "Completed"}) } > Start working!</a> %>
+         </td> 
+      <% end %>
+
+      <%= case subtask.status do %>
+        <% :Completed-> %>
+          <td><%= Timex.format!(subtask.end_time,"%d-%m-%Y %H:%M:%S", :strftime) %> </td>
+        <% :Working -> %>
+        <td> <%= link "Mark Done!", to: Routes.sub_task_path(@conn, :update_subtask_status, subtask.task_id, subtask.id, new_status: :Completed), method: :patch %> </td>
+        <% _ -> %>
+        <td> </td>
+      <% end %>
+      <td><%= subtask.end_time && time_spent(subtask.start_time, subtask.end_time) %> </td>
+
+      <td>
+        <span><%= link "Edit", to: Routes.sub_task_path(@conn, :edit_subtask, @task_id, subtask.id) %></span>
+        <span><%= link "Delete", to: Routes.sub_task_path(@conn, :delete_subtask, @task_id, subtask.id), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "Add New Sub Task", to: Routes.sub_task_path(@conn, :new_subtask, @task_id) %></span><br><br>
+<span><%= link "Task Dashboard", to: "/tasks" %></span> |
+<span><%= link "Home", to: "/" %> </span>
+<br><br><br>

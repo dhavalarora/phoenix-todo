@@ -1,28 +1,29 @@
 <h1>Your Tasks</h1>
-
 <table>
   <thead>
     <tr>
       <th>Title</th>
+      <th>Subtasks</th>
       <th>Status</th>
       <th>Start time</th>
       <th>End time</th>
       <th>Time taken</th>
-
-      <th></th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
 <%= for task <- filter(@tasks, @filter) do %>
     <tr>
       <td><%= task.title %></td>
+      <td>
+        <span><%= link "SubTasks", to: Routes.sub_task_path(@conn, :subtasks, task.id) %></span>
+      </td>
       <td><%= task.status %></td>
       <%= if task.start_time do %>
         <td><%= Timex.format!(task.start_time,"%d-%m-%Y %H:%M:%S", :strftime)  %> </td>
       <% else %>
         <td>
         <%= link "Start working!", to: Routes.task_path(@conn, :update_status, task.id, new_status: :Working), method: :patch %>
-         <%# <a href={ Routes.update_status_path(@conn, :update_status, task.id, %{status: "Completed"}) } > Start working!</a> %>
          </td> 
       <% end %>
 

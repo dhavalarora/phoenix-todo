@@ -1,0 +1,33 @@
+<h1>Show SubTask</h1>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @subtask.title %>
+  </li>
+
+  <li>
+    <strong>User:</strong>
+    <%= @subtask.task_id %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @subtask.status %>
+  </li>
+
+  <li>
+    <strong>Start time:</strong>
+    <%= @subtask.start_time %>
+  </li>
+
+  <li>
+    <strong>End time:</strong>
+    <%= @subtask.end_time %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.sub_task_path(@conn, :edit_subtask, @task.id, @subtask.id) %></span>
+<span><%= link "Back", to: Routes.sub_task_path(@conn, :subtasks, @task.id) %></span>
